@@ -4,4 +4,6 @@ SLRGP algorithm uses Laplacian regularized active learning measure (LR-AL) to se
 
 Implementation is provided in the folder named Code. Run Main_Gif_SLRGP.m to generate the plots shown below:
 
+![SLRGP](Code/Branin_True_Contour.png)
+
 ![SLRGP](Code/SLRGPBranintest.gif)

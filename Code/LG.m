@@ -1,0 +1,30 @@
+function LMind = LG(xtr,xvl,ytr,h,covfunc,candL)
+tempX_validset = xvl;
+tempX_trainset = xtr;
+tempy_trainset = ytr;
+gb = get_gamma(xtr,ytr,h,xvl,covfunc,candL);
+[yte_pred,yc] = gpmean(xtr,xvl,ytr,h,covfunc);
+tempyc = yc;
+%%
+tempy = yte_pred;
+sxv = size(xvl,1);
+MSEmm = zeros(sxv,1);
+for pnt = 1:sxv
+    xa  = xvl(pnt,:);
+    xvl(pnt,:) = [];    
+    xtr = vertcat(xtr, xa);
+    ya  = yte_pred(pnt,:);
+    yte_pred(pnt,:) = [];    
+    ytr = vertcat(ytr, ya);
+    fsummms = LGP(xtr,xvl,ytr,h,gb,covfunc,yte_pred);
+    yc(pnt,:) = [];  
+    al = mean(yc - fsummms);
+    MSEmm(pnt,:) = al;
+    xvl = tempX_validset;
+    xtr = tempX_trainset;
+    yte_pred = tempy;
+    ytr = tempy_trainset;
+    yc = tempyc;
+end
+[~,ind] = max(MSEmm);
+LMind = ind;
